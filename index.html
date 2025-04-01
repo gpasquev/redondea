@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redondeo de Números</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input, select {
+            font-size: 18px;
+            margin: 10px;
+            padding: 5px;
+        }
+        #resultado {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body>
+    <h2>Redondear Número</h2>
+    <label for="numero">Número:</label>
+    <input type="number" id="numero" step="any" value="3.1415926">
+    <br>
+    <label for="decimales">Decimales:</label>
+    <select id="decimales">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2" selected>2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
+    <p>Resultado: <span id="resultado"></span></p>
+
+    <script>
+        function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[[\]]/g, '\$&');
+            let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+            let results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        function redondear() {
+            let num = parseFloat(document.getElementById("numero").value);
+            let decimales = parseInt(document.getElementById("decimales").value);
+            if (!isNaN(num)) {
+                document.getElementById("resultado").textContent = num.toFixed(decimales);
+            } else {
+                document.getElementById("resultado").textContent = "Ingrese un número válido";
+            }
+        }
+
+        document.getElementById("numero").addEventListener("input", redondear);
+        document.getElementById("decimales").addEventListener("change", redondear);
+
+        window.onload = function () {
+            let paramDecimales = getParameterByName("decimales");
+            if (paramDecimales !== null && !isNaN(paramDecimales)) {
+                document.getElementById("decimales").value = paramDecimales;
+            }
+            redondear(); // Para mostrar el valor inicial redondeado
+        };
+    </script>
+</body>
+</html>
+
